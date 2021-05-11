@@ -17,10 +17,17 @@
         <property name="printedLoggerLevel" value="FINE"/>
     </bean>
 
+    <!-- Define the dependency -->
+    <bean id="myFortune"
+        class="HappyFortuneService">
+    </bean>
+
     <!-- Define your beans here -->
     <bean id="myCoach"
         class="SwimCoach">
 
+        <!-- set up constructor injection -->
+        <constructor-arg ref="myFortune"/>
     </bean>
     
 </beans>
