@@ -20,7 +20,7 @@
 
     <!-- Define the dependency -->
     <bean id="myFortuneService"
-          class="RandomFortuneService">
+          class="HappyFortuneService">
     </bean>
 
     <!-- Define your beans here -->
@@ -28,14 +28,6 @@
           class="TrackCoach">
         <!-- set up constructor injection -->
         <constructor-arg ref="myFortuneService"/>
-    </bean>
-
-    <bean id="myCricketCoach"
-          class="CricketCoach">
-        <property name="fortuneService" ref="myFortuneService"/>
-
-        <property name="emailAddress" value="${foo.email}"/>
-        <property name="team" value="${foo.team}"/>
     </bean>
 
 </beans>
