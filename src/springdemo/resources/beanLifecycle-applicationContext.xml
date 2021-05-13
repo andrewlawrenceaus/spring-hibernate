@@ -20,13 +20,15 @@
 
     <!-- Define the dependency -->
     <bean id="myFortuneService"
-          class="HappyFortuneService">
+          class="RandomFortuneService"
+          scope="prototype">
     </bean>
 
     <!-- Define your beans here -->
     <bean id="myCoach"
           class="TrackCoach"
-          scope="prototype">
+          init-method="doMyStartupStuff"
+          destroy-method="doMyCleanupStuffYoYo" scope="prototype">
         <!-- set up constructor injection -->
         <constructor-arg ref="myFortuneService"/>
     </bean>
