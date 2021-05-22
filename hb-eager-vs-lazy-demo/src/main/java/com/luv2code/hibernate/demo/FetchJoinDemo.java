@@ -6,8 +6,10 @@ import com.luv2code.hibernate.demo.entity.InstructorDetail;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
-public class CreateCoursesDemo {
+
+public class FetchJoinDemo {
 
     public static void main(String[] args) {
 
@@ -30,30 +32,32 @@ public class CreateCoursesDemo {
 
             // get the instructor from db
             int theId = 1;
-            Instructor tempInstructor = session.get(Instructor.class, theId);
 
-            // create some courses
-            Course tempCourse1 = new Course("Air Guitar - The Ultimate Guide");
-            Course tempCourse2 = new Course("The Pinball Masterclass");
+            Query<Instructor> query = session.createQuery("select i from Instructor i "
+                            + "JOIN FETCH i.courses "
+                            + "where i.id=:theInstructorId",
+                    Instructor.class);
 
-            // add courses to instructor
-            tempInstructor.add(tempCourse1);
-            tempInstructor.add(tempCourse2);
+            query.setParameter("theInstructorId", theId);
+            Instructor tempInstructor = query.getSingleResult();
 
-            // save the courses
-            session.save(tempCourse1);
-            session.save(tempCourse2);
+
+
+            System.out.println("Instructor: " + tempInstructor);
+
 
             // commit transaction
             session.getTransaction().commit();
+            session.close();
             System.out.println("Done!");
-
+            System.out.println("Courses: " + tempInstructor.getCourses());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             session.close();
             factory.close();
         }
+
 
     }
 }

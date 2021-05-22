@@ -7,13 +7,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class CreateCoursesDemo {
+public class GetInstructorCoursesDemo {
 
     public static void main(String[] args) {
 
         // create session factory
         SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml")
+                .configure("src/main/resources/hibernate.cfg.xml")
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetail.class)
                 .addAnnotatedClass(Course.class)
@@ -29,20 +29,13 @@ public class CreateCoursesDemo {
             session.beginTransaction();
 
             // get the instructor from db
-            int theId = 1;
+            int theId = 8;
             Instructor tempInstructor = session.get(Instructor.class, theId);
 
-            // create some courses
-            Course tempCourse1 = new Course("Air Guitar - The Ultimate Guide");
-            Course tempCourse2 = new Course("The Pinball Masterclass");
+            System.out.println("Instructor: " + tempInstructor);
 
-            // add courses to instructor
-            tempInstructor.add(tempCourse1);
-            tempInstructor.add(tempCourse2);
-
-            // save the courses
-            session.save(tempCourse1);
-            session.save(tempCourse2);
+            // get course for the instructor
+            System.out.println("Courses: " + tempInstructor.getCourses());
 
             // commit transaction
             session.getTransaction().commit();

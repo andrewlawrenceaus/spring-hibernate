@@ -1,22 +1,21 @@
 package com.luv2code.hibernate.demo;
 
-import com.luv2code.hibernate.demo.entity.Course;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.omg.CORBA.UserException;
 
-public class CreateCoursesDemo {
+public class DeleteDemo {
 
     public static void main(String[] args) {
 
         // create session factory
         SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml")
+                .configure("src/main/resources/hibernate.cfg.xml")
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetail.class)
-                .addAnnotatedClass(Course.class)
                 .buildSessionFactory();
 
         // create session
@@ -24,25 +23,25 @@ public class CreateCoursesDemo {
 
         // use the session object to save the Java object
         try {
-
             // start a transaction
             session.beginTransaction();
 
-            // get the instructor from db
+            // get instructor by primary key / id
             int theId = 1;
-            Instructor tempInstructor = session.get(Instructor.class, theId);
+            Instructor tempInstructor =
+                    session.get(Instructor.class, theId);
 
-            // create some courses
-            Course tempCourse1 = new Course("Air Guitar - The Ultimate Guide");
-            Course tempCourse2 = new Course("The Pinball Masterclass");
+            System.out.println("Found instructor: " + tempInstructor);
 
-            // add courses to instructor
-            tempInstructor.add(tempCourse1);
-            tempInstructor.add(tempCourse2);
+            // delete the instructor
+            if (tempInstructor != null) {
+                System.out.println("Deleting " + tempInstructor);
 
-            // save the courses
-            session.save(tempCourse1);
-            session.save(tempCourse2);
+                // Note: this will ALSO delete associated "details" object
+                // because of CascadeType.ALL
+
+                session.delete(tempInstructor);
+            }
 
             // commit transaction
             session.getTransaction().commit();
@@ -51,7 +50,6 @@ public class CreateCoursesDemo {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            session.close();
             factory.close();
         }
 

@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class CreateCoursesDemo {
+public class CreateInstructorDemo {
 
     public static void main(String[] args) {
 
@@ -24,25 +24,28 @@ public class CreateCoursesDemo {
 
         // use the session object to save the Java object
         try {
+            // create the objects
+            Instructor tempInstructor =
+                    new Instructor("Susan", "public", "susan.public@luv2code.com");
+
+            InstructorDetail tempInstructorDetail =
+                    new InstructorDetail(
+                            "http://www.youtube.com",
+                            "Video Games"
+                    );
+            // associate the objects
+            tempInstructor.setInstructorDetail(tempInstructorDetail);
 
             // start a transaction
             session.beginTransaction();
 
-            // get the instructor from db
-            int theId = 1;
-            Instructor tempInstructor = session.get(Instructor.class, theId);
-
-            // create some courses
-            Course tempCourse1 = new Course("Air Guitar - The Ultimate Guide");
-            Course tempCourse2 = new Course("The Pinball Masterclass");
-
-            // add courses to instructor
-            tempInstructor.add(tempCourse1);
-            tempInstructor.add(tempCourse2);
-
-            // save the courses
-            session.save(tempCourse1);
-            session.save(tempCourse2);
+            // save the instructor
+            //
+            // Note: this will ALSO save the details object
+            // because of CascadeType.ALL
+            //
+            System.out.println("Saving instructor: " + tempInstructor);
+            session.save(tempInstructor);
 
             // commit transaction
             session.getTransaction().commit();

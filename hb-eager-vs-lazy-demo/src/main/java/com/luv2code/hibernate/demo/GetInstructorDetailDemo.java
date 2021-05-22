@@ -1,13 +1,12 @@
 package com.luv2code.hibernate.demo;
 
-import com.luv2code.hibernate.demo.entity.Course;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class CreateCoursesDemo {
+public class GetInstructorDetailDemo {
 
     public static void main(String[] args) {
 
@@ -16,7 +15,6 @@ public class CreateCoursesDemo {
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetail.class)
-                .addAnnotatedClass(Course.class)
                 .buildSessionFactory();
 
         // create session
@@ -24,25 +22,25 @@ public class CreateCoursesDemo {
 
         // use the session object to save the Java object
         try {
-
             // start a transaction
             session.beginTransaction();
 
-            // get the instructor from db
-            int theId = 1;
-            Instructor tempInstructor = session.get(Instructor.class, theId);
+            // get the instructor detail object
+            int theId = 3;
+            InstructorDetail tempInstructorDetail = session.get(InstructorDetail.class, theId);
 
-            // create some courses
-            Course tempCourse1 = new Course("Air Guitar - The Ultimate Guide");
-            Course tempCourse2 = new Course("The Pinball Masterclass");
+            // print the instructor detail
+            System.out.println("tempInstructorDetail: " + tempInstructorDetail);
 
-            // add courses to instructor
-            tempInstructor.add(tempCourse1);
-            tempInstructor.add(tempCourse2);
+            // print the associated instructor
+            System.out.println("the associated instructor: " + tempInstructorDetail.getInstructor());
 
-            // save the courses
-            session.save(tempCourse1);
-            session.save(tempCourse2);
+            tempInstructorDetail.getInstructor().setInstructorDetail(null);
+
+            // now let's delete the instructor detail
+            System.out.println("Deleting tempInstructorDetail: "
+                    + tempInstructorDetail);
+            session.delete(tempInstructorDetail);
 
             // commit transaction
             session.getTransaction().commit();

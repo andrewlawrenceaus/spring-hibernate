@@ -13,7 +13,7 @@ public class CreateCoursesDemo {
 
         // create session factory
         SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml")
+                .configure("src/main/resources/hibernate.cfg.xml")
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetail.class)
                 .addAnnotatedClass(Course.class)
