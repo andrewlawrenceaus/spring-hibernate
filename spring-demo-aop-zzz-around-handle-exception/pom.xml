@@ -115,8 +115,6 @@
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectjweaver.version}</version>
         </dependency>
-
-
     </dependencies>
 
 
